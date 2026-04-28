@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case: Banco Inter — Daniele Guimarães</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #ffffff; --bg-soft: #f7f7f7; --bg-dark: #111111;
+    --ink: #111111; --mid: #555555; --soft: #999999;
+    --border: #e5e5e5; --white: #ffffff;
+    --inter-orange: #FF6B00;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--ink); font-family: 'Inter', sans-serif; font-weight: 400; overflow-x: hidden; line-height: 1.6; }
+
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 1rem 3rem; background: rgba(255,255,255,0.95); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); }
+  .nav-back { font-size: 0.8rem; font-weight: 500; color: var(--mid); text-decoration: none; transition: color 0.15s; }
+  .nav-back:hover { color: var(--ink); }
+  .nav-title { font-size: 0.8rem; color: var(--soft); }
+
+  /* HERO */
+  .hero { min-height: 70vh; padding-top: 64px; display: grid; grid-template-columns: 1fr 1fr; background: var(--bg-dark); }
+  .hero-left { padding: 6rem 4rem 6rem 3rem; display: flex; flex-direction: column; justify-content: center; border-right: 1px solid #222; }
+  .case-number { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #555; margin-bottom: 1.5rem; opacity: 0; animation: fadeUp 0.6s 0.1s forwards; }
+  .case-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.5rem; opacity: 0; animation: fadeUp 0.6s 0.2s forwards; }
+  .tag { font-size: 0.65rem; font-weight: 500; border: 1px solid #333; color: #888; padding: 0.3rem 0.75rem; border-radius: 4px; }
+  .hero-title { font-size: clamp(2.2rem, 5vw, 4rem); font-weight: 600; letter-spacing: -0.03em; line-height: 1.05; color: var(--white); margin-bottom: 1.5rem; opacity: 0; animation: fadeUp 0.7s 0.3s forwards; }
+  .hero-subtitle { font-size: 0.975rem; line-height: 1.8; color: #777; max-width: 44ch; opacity: 0; animation: fadeUp 0.7s 0.4s forwards; }
+  .hero-right { background: #161616; padding: 6rem 3rem; display: flex; flex-direction: column; justify-content: center; gap: 2rem; opacity: 0; animation: fadeIn 0.8s 0.5s forwards; }
+  .meta-label { font-size: 0.62rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #444; margin-bottom: 0.4rem; }
+  .meta-value { font-size: 0.9rem; color: #aaa; line-height: 1.5; }
+  .meta-divider { border: none; border-top: 1px solid #222; }
+
+  /* SECTIONS */
+  .section { padding: 5rem 3rem; }
+  .section-inner { max-width: 820px; margin: 0 auto; }
+  .section-label { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--soft); margin-bottom: 0.75rem; }
+  .section-title { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 600; letter-spacing: -0.02em; color: var(--ink); line-height: 1.15; margin-bottom: 1.5rem; }
+  .body-text { font-size: 0.975rem; line-height: 1.85; color: var(--mid); }
+  .body-text + .body-text { margin-top: 1em; }
+  .body-text strong { color: var(--ink); font-weight: 500; }
+
+  .highlight-box { background: var(--bg-soft); border: 1px solid var(--border); border-left: 3px solid var(--ink); padding: 1.5rem 2rem; margin: 2rem 0; border-radius: 0 6px 6px 0; }
+  .highlight-label { font-size: 0.62rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--soft); margin-bottom: 0.6rem; }
+  .highlight-text { font-size: 0.9rem; line-height: 1.8; color: var(--mid); }
+  .highlight-text strong { color: var(--ink); font-weight: 500; }
+
+  /* FRICTION GRID */
+  .friction-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; margin-top: 2rem; background: var(--border); border: 1px solid var(--border); }
+  .friction-card { background: var(--bg); padding: 2rem; transition: background 0.15s; }
+  .friction-card:hover { background: var(--bg-soft); }
+  .friction-step { font-size: 0.62rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--soft); margin-bottom: 0.5rem; }
+  .friction-title { font-size: 0.9rem; font-weight: 600; color: var(--ink); margin-bottom: 0.5rem; }
+  .friction-desc { font-size: 0.82rem; line-height: 1.7; color: var(--mid); }
+
+  /* MOCKUP SECTION */
+  .mockup-section { background: var(--bg-dark); padding: 5rem 3rem; }
+  .mockup-section .section-label { color: #555; }
+  .mockup-section .section-title { color: var(--white); }
+  .mockup-section .body-text { color: #666; }
+  .mockups-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-top: 3rem; }
+  .mockup-wrap { display: flex; flex-direction: column; gap: 0.75rem; }
+  .mockup-label { font-size: 0.62rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #444; }
+
+  /* PHONE */
+  .phone { background: #0f0f0f; border-radius: 22px; border: 1.5px solid #1e1e1e; padding: 1.25rem; min-height: 300px; display: flex; flex-direction: column; }
+  .phone-bar { width: 44px; height: 5px; background: #1e1e1e; border-radius: 3px; margin: 0 auto 1.25rem; }
+  .p-title { font-size: 0.8rem; font-weight: 600; color: #ccc; margin-bottom: 0.3rem; }
+  .p-sub { font-size: 0.65rem; color: #555; line-height: 1.5; margin-bottom: 1rem; }
+  .p-emoji { font-size: 1.3rem; margin-bottom: 0.6rem; }
+  .p-field { background: #1a1a1a; border: 1px solid #252525; border-radius: 5px; padding: 0.55rem 0.75rem; font-size: 0.68rem; color: #555; margin-bottom: 0.6rem; }
+  .p-chips { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 0.875rem; }
+  .p-chip { font-size: 0.6rem; font-weight: 500; background: #1a1a1a; border: 1px solid #252525; color: #666; padding: 0.25rem 0.55rem; border-radius: 3px; }
+  .p-btn { border-radius: 5px; padding: 0.6rem; font-size: 0.72rem; font-weight: 600; text-align: center; margin-top: auto; }
+  .p-btn-orange { background: var(--inter-orange); color: white; }
+  .p-btn-ghost { background: #1a1a1a; border: 1px solid #252525; color: #555; }
+  .p-progress { display: flex; gap: 2px; margin-bottom: 1rem; }
+  .p-dot { height: 3px; flex: 1; border-radius: 2px; background: #1e1e1e; }
+  .p-dot.done { background: var(--inter-orange); }
+  .p-dot.active { background: rgba(255,107,0,0.4); }
+  .p-error { font-size: 0.62rem; color: #c0392b; background: rgba(192,57,43,0.08); border: 1px solid rgba(192,57,43,0.15); border-radius: 5px; padding: 0.6rem 0.75rem; margin-bottom: 0.75rem; line-height: 1.5; }
+  .p-hint { font-size: 0.6rem; color: #444; text-align: center; margin-top: 0.5rem; line-height: 1.4; }
+  .p-success { text-align: center; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.4rem; }
+  .p-success-icon { font-size: 1.6rem; }
+  .p-success-title { font-size: 0.82rem; font-weight: 600; color: #ddd; }
+  .p-success-body { font-size: 0.65rem; color: #555; line-height: 1.6; }
+  .p-info-box { background: #1a1a1a; border: 1px solid #252525; border-radius: 5px; padding: 0.65rem 0.75rem; margin-top: 0.75rem; font-size: 0.62rem; color: #555; line-height: 1.5; }
+
+  /* ANNOTATIONS */
+  .annotations-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; margin-top: 2.5rem; background: #1e1e1e; border: 1px solid #1e1e1e; }
+  .annotation { background: #161616; padding: 1.5rem; }
+  .annotation-tag { font-size: 0.6rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #444; margin-bottom: 0.5rem; }
+  .annotation-text { font-size: 0.8rem; line-height: 1.7; color: #555; }
+  .annotation-text strong { color: #888; font-weight: 500; }
+
+  /* PRINCIPLES */
+  .principles-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; margin-top: 2rem; background: var(--border); border: 1px solid var(--border); }
+  .principle { background: var(--bg-soft); padding: 2rem; }
+  .principle-num { font-size: 2rem; font-weight: 600; letter-spacing: -0.03em; color: #ddd; line-height: 1; margin-bottom: 0.875rem; }
+  .principle-title { font-size: 0.9rem; font-weight: 600; color: var(--ink); margin-bottom: 0.5rem; }
+  .principle-desc { font-size: 0.82rem; line-height: 1.7; color: var(--mid); }
+
+  /* LEARNINGS */
+  .learning-list { margin-top: 2rem; display: flex; flex-direction: column; gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  .learning-item { display: flex; gap: 1.25rem; padding: 1.5rem 2rem; background: var(--bg); align-items: flex-start; }
+  .learning-icon { font-size: 1rem; flex-shrink: 0; padding-top: 0.15rem; }
+  .learning-text { font-size: 0.875rem; line-height: 1.8; color: var(--mid); }
+  .learning-text strong { color: var(--ink); font-weight: 500; }
+  .disclaimer { font-size: 0.72rem; color: var(--soft); font-style: italic; margin-top: 1.5rem; }
+
+  /* CASE NAV */
+  .case-nav { background: var(--bg-dark); padding: 3rem; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #222; }
+  .case-nav-link { text-decoration: none; }
+  .case-nav-meta { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #555; margin-bottom: 0.4rem; }
+  .case-nav-title { font-size: 1rem; font-weight: 500; color: #aaa; transition: color 0.15s; }
+  .case-nav-link:hover .case-nav-title { color: var(--white); }
+  .back-btn { background: rgba(255,255,255,0.06); border: 1px solid #333; color: #aaa; text-decoration: none; font-size: 0.75rem; font-weight: 500; padding: 0.75rem 1.5rem; border-radius: 6px; transition: all 0.15s; }
+  .back-btn:hover { background: var(--white); color: var(--ink); }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  .reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="portfolio-daniele.html" class="nav-back">← Portfólio</a>
+  <span class="nav-title">Case 01 — Banco Inter</span>
+</nav>
+
+<section class="hero">
+  <div class="hero-left">
+    <p class="case-number">Case 01 / 04</p>
+    <div class="case-tags">
+      <span class="tag">UX Writing</span>
+      <span class="tag">Microcopy</span>
+      <span class="tag">Onboarding</span>
+      <span class="tag">Exercício conceitual</span>
+    </div>
+    <h1 class="hero-title">Abrir uma conta não deveria dar medo.</h1>
+    <p class="hero-subtitle">Uma análise crítica do fluxo de onboarding do Banco Inter — e como o microcopy pode transformar um processo burocrático em uma experiência que gera confiança desde o primeiro toque.</p>
+  </div>
+  <div class="hero-right">
+    <div>
+      <p class="meta-label">App analisado</p>
+      <p class="meta-value">Banco Inter — abertura de conta digital (pessoa física)</p>
+    </div>
+    <hr class="meta-divider">
+    <div>
+      <p class="meta-label">Tipo</p>
+      <p class="meta-value">Exercício conceitual de UX Writing — análise e reescrita de microcopy</p>
+    </div>
+    <hr class="meta-divider">
+    <div>
+      <p class="meta-label">Foco</p>
+      <p class="meta-value">Redução de fricção linguística, comunicação de progresso, tom humano em contexto financeiro</p>
+    </div>
+    <hr class="meta-divider">
+    <div>
+      <p class="meta-label">Telas analisadas</p>
+      <p class="meta-value">Tela inicial · Erro de conexão · Termos e condições · Confirmação final</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTEXTO -->
+<section class="section" style="border-bottom: 1px solid var(--border);">
+  <div class="section-inner">
+    <p class="section-label reveal">Contexto</p>
+    <h2 class="section-title reveal">O momento mais crítico<br>de um banco digital</h2>
+    <p class="body-text reveal">O Banco Inter é hoje um dos maiores bancos digitais do Brasil, com mais de 30 milhões de clientes. Sua proposta é clara: uma conta gratuita, sem burocracia, 100% pelo celular. Mas existe uma contradição: <strong>o processo de abertura de conta tem 13 passos</strong> — e o usuário não sabe disso quando começa.</p>
+    <p class="body-text reveal">Em serviços financeiros, o onboarding é o momento em que o usuário decide se confia ou não na instituição. Um texto mal colocado, uma mensagem de erro fria ou um botão ambíguo pode ser suficiente para que alguém abandone o cadastro.</p>
+    <div class="highlight-box reveal">
+      <p class="highlight-label">A questão central deste case</p>
+      <p class="highlight-text"><strong>O problema do Inter não é o fluxo em si — é o que o texto diz (e deixa de dizer) em cada momento crítico.</strong> Com o microcopy certo, é possível reduzir a ansiedade do usuário, comunicar progresso e transformar cada passo burocrático em um passo de confiança.</p>
+    </div>
+  </div>
+</section>
+
+<!-- DIAGNÓSTICO -->
+<section class="section" style="background: var(--bg-soft); border-bottom: 1px solid var(--border);">
+  <div class="section-inner">
+    <p class="section-label reveal">Diagnóstico</p>
+    <h2 class="section-title reveal">Quatro momentos de fricção linguística</h2>
+    <p class="body-text reveal">Ao mapear o fluxo, identifiquei quatro pontos onde o microcopy atual cria barreiras desnecessárias — não por problemas de design, mas de <strong>linguagem e comunicação</strong>.</p>
+  </div>
+  <div style="max-width: 960px; margin: 2rem auto 0; padding: 0 3rem;">
+    <div class="friction-grid reveal">
+      <div class="friction-card">
+        <p class="friction-step">Passo 01 — Tela inicial</p>
+        <h3 class="friction-title">O usuário não sabe o que vem pela frente</h3>
+        <p class="friction-desc">O app pede o CPF logo de cara — sem apresentação, sem contexto, sem dizer o que será necessário. O usuário entra no escuro em um processo de 13 etapas.</p>
+      </div>
+      <div class="friction-card">
+        <p class="friction-step">Passo 04 — Validação de dados</p>
+        <h3 class="friction-title">Mensagens de erro sem saída</h3>
+        <p class="friction-desc">"A conexão à Internet talvez esteja inativa." — sem botão de tentar novamente, sem instrução clara. O usuário fica preso sem saber o que fazer.</p>
+      </div>
+      <div class="friction-card">
+        <p class="friction-step">Passo 12 — Termos e condições</p>
+        <h3 class="friction-title">Linguagem jurídica no pior momento</h3>
+        <p class="friction-desc">"Li e concordo com os termos e condições" aparece bem no final, após todo o esforço — com tom frio e sem contexto do que exatamente está sendo aceito.</p>
+      </div>
+      <div class="friction-card">
+        <p class="friction-step">Passo 13 — Confirmação</p>
+        <h3 class="friction-title">O silêncio após o cadastro</h3>
+        <p class="friction-desc">Após 13 passos, o app simplesmente diz que a conta está "em análise" — sem celebrar a conquista, sem comunicar o que vem a seguir, sem estimar o prazo.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MOCKUPS -->
+<section class="mockup-section">
+  <div style="max-width: 1100px; margin: 0 auto;">
+    <p class="section-label reveal">Reescrita</p>
+    <h2 class="section-title reveal">Microcopy antes & depois</h2>
+    <p class="body-text reveal">Quatro telas reescritas — cada intervenção com intenção clara e raciocínio explícito.</p>
+
+    <div class="mockups-grid">
+
+      <!-- TELA 1 ANTES -->
+      <div class="mockup-wrap reveal">
+        <p class="mockup-label">❌ Tela inicial — antes</p>
+        <div class="phone">
+          <div class="phone-bar"></div>
+          <p class="p-title">Abra sua conta</p>
+          <p class="p-sub">Informe seu CPF para começar</p>
+          <div class="p-field">000.000.000-00</div>
+          <div class="p-btn p-btn-orange" style="margin-top:auto;">Continuar</div>
+        </div>
+      </div>
+
+      <!-- TELA 1 DEPOIS -->
+      <div class="mockup-wrap reveal">
+        <p class="mockup-label">✅ Tela inicial — depois</p>
+        <div class="phone">
+          <div class="phone-bar"></div>
+          <p class="p-emoji">👋</p>
+          <p class="p-title">Bora abrir sua conta?</p>
+          <p class="p-sub">Leva menos de 5 minutos. Você vai precisar de:</p>
+          <div class="p-chips">
+            <span class="p-chip">📄 RG ou CNH</span>
+            <span class="p-chip">📱 Câmera</span>
+            <span class="p-chip">📍 Endereço</span>
+          </div>
+          <div class="p-field" style="color:#333;">000.000.000-00</div>
+          <div class="p-btn p-btn-orange">Começar →</div>
+        </div>
+      </div>
+
+      <!-- TELA 2 ANTES -->
+      <div class="mockup-wrap reveal">
+        <p class="mockup-label">❌ Erro de conexão — antes</p>
+        <div class="phone">
+          <div class="phone-bar"></div>
+          <p class="p-title">Erro</p>
+          <div class="p-error">A conexão à Internet talvez esteja inativa.</div>
+          <div class="p-btn p-btn-ghost" style="margin-top:auto;">OK</div>
+        </div>
+      </div>
+
+      <!-- TELA 2 DEPOIS -->
+      <div class="mockup-wrap reveal">
+        <p class="mockup-label">✅ Erro de conexão — depois</p>
+        <div class="phone">
+          <div class="phone-bar"></div>
+          <p class="p-emoji">📶</p>
+          <p class="p-title">Perdemos a conexão</p>
+          <p class="p-sub">Seus dados estão salvos. Verifique sua internet e tente de novo — você não vai perder o progresso.</p>
+          <div class="p-btn p-btn-orange" style="margin-top:auto;">Tentar novamente</div>
+          <p class="p-hint">Ou continue de onde parou quando a conexão voltar.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="mockups-grid" style="margin-top: 1.5rem;">
+
+      <!-- TELA 3 ANTES -->
+      <div class="mockup-wrap reveal">
+        <p class="mockup-label">❌ Termos — antes</p>
+        <div class="phone">
+          <div class="phone-bar"></div>
+          <p class="p-title">Proposta de abertura</p>
+          <p class="p-sub">Leia os termos antes de prosseguir.</p>
+          <div class="p-field" style="height:70px; font-size:0.6rem; color:#333;">Texto jurídico extenso em fonte pequena...</div>
+          <div style="font-size:0.65rem; color:#444; margin-bottom:0.75rem;">☐ &nbsp;Li e concordo com os termos e condições</div>
+          <div class="p-btn p-btn-orange">Aceitar</div>
+        </div>
+      </div>
+
+      <!-- TELA 3 DEPOIS -->
+      <div class="mockup-wrap reveal">
+        <p class="mockup-label">✅ Termos — depois</p>
+        <div class="phone">
+          <div class="phone-bar"></div>
+          <p class="p-emoji">🔒</p>
+          <p class="p-title">Quase lá!</p>
+          <p class="p-sub">Confirme o que você está aceitando:</p>
+          <div style="display:flex; flex-direction:column; gap:0.4rem; margin-bottom:0.875rem;">
+            <div style="font-size:0.65rem; color:#555; display:flex; gap:0.4rem;">✅ <span>Conta gratuita, sem tarifas mensais</span></div>
+            <div style="font-size:0.65rem; color:#555; display:flex; gap:0.4rem;">✅ <span>Pix e transferências ilimitados e gratuitos</span></div>
+            <div style="font-size:0.65rem; color:#444; display:flex; gap:0.4rem;">📄 <span style="text-decoration:underline;">Ver contrato completo</span></div>
+          </div>
+          <div class="p-btn p-btn-orange">Confirmar e abrir minha conta</div>
+        </div>
+      </div>
+
+      <!-- TELA 4 ANTES -->
+      <div class="mockup-wrap reveal">
+        <p class="mockup-label">❌ Confirmação — antes</p>
+        <div class="phone">
+          <div class="phone-bar"></div>
+          <p class="p-title" style="margin-top:1rem;">Cadastro em análise</p>
+          <p class="p-sub">Seus dados estão sendo analisados. Você receberá uma resposta em breve.</p>
+        </div>
+      </div>
+
+      <!-- TELA 4 DEPOIS -->
+      <div class="mockup-wrap reveal">
+        <p class="mockup-label">✅ Confirmação — depois</p>
+        <div class="phone">
+          <div class="phone-bar"></div>
+          <div class="p-success">
+            <div class="p-success-icon">🎉</div>
+            <p class="p-success-title">Pedido enviado!</p>
+            <p class="p-success-body">Você concluiu todos os passos. Te avisamos em até 3 dias úteis — aqui no app e por e-mail.</p>
+          </div>
+          <div class="p-info-box">📬 Seu cartão já está sendo preparado. Chega em até 15 dias no endereço cadastrado.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Anotações -->
+    <div class="annotations-grid reveal" style="margin-top: 2rem;">
+      <div class="annotation">
+        <p class="annotation-tag">Tela inicial</p>
+        <p class="annotation-text"><strong>Por quê?</strong> Informar o que será necessário antes de começar reduz abandono. O usuário que não tem o documento em mãos pode se preparar — em vez de desistir no meio.</p>
+      </div>
+      <div class="annotation">
+        <p class="annotation-tag">Erro de conexão</p>
+        <p class="annotation-text"><strong>Por quê?</strong> A mensagem original não diz se os dados foram perdidos. A ansiedade de recomeçar tudo é o que faz o usuário desistir — "seus dados estão salvos" elimina esse medo.</p>
+      </div>
+      <div class="annotation">
+        <p class="annotation-tag">Termos e condições</p>
+        <p class="annotation-text"><strong>Por quê?</strong> Ninguém lê paredes de texto legal. Resumir os pontos principais em linguagem humana gera mais confiança — e é mais honesto — do que esconder tudo num PDF.</p>
+      </div>
+      <div class="annotation">
+        <p class="annotation-tag">Confirmação final</p>
+        <p class="annotation-text"><strong>Por quê?</strong> Após 13 passos, o usuário merece ser celebrado. Adicionar contexto sobre o cartão e o prazo elimina a incerteza do "e agora?" — onde começa o arrependimento.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRINCÍPIOS -->
+<section class="section" style="border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+  <div class="section-inner">
+    <p class="section-label reveal">Raciocínio</p>
+    <h2 class="section-title reveal">Os três princípios que<br>guiaram as escolhas</h2>
+  </div>
+  <div style="max-width: 960px; margin: 0 auto; padding: 0 3rem;">
+    <div class="principles-grid reveal">
+      <div class="principle">
+        <div class="principle-num">01</div>
+        <h3 class="principle-title">Reduzir a ansiedade, não só a fricção</h3>
+        <p class="principle-desc">Em serviços financeiros, o usuário tem medo de errar, de perder dados, de não ser aprovado. O microcopy deve ativamente aliviar esses medos — não só facilitar o preenchimento.</p>
+      </div>
+      <div class="principle">
+        <div class="principle-num">02</div>
+        <h3 class="principle-title">Comunicar progresso é comunicar respeito</h3>
+        <p class="principle-desc">Dizer "quase lá" ou "você concluiu todos os passos" não é só informativo — é reconhecer o esforço do usuário. Progresso comunicado gera motivação para continuar.</p>
+      </div>
+      <div class="principle">
+        <div class="principle-num">03</div>
+        <h3 class="principle-title">Tom humano não é tom informal</h3>
+        <p class="principle-desc">Em contexto financeiro, encontrar o equilíbrio certo é essencial: direto, claro, caloroso e profissional ao mesmo tempo. Humanizar não significa perder seriedade.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- APRENDIZADOS -->
+<section class="section" style="background: var(--bg-soft);">
+  <div class="section-inner">
+    <p class="section-label reveal">Aprendizados</p>
+    <h2 class="section-title reveal">O que este exercício<br>me ensinou</h2>
+    <div class="learning-list">
+      <div class="learning-item reveal">
+        <span class="learning-icon">🏦</span>
+        <p class="learning-text"><strong>Contexto de uso muda tudo.</strong> As mesmas técnicas de plain language que usei na CGE-RJ precisam ser calibradas para o contexto financeiro — onde confiança e segurança pesam mais do que simpatia.</p>
+      </div>
+      <div class="learning-item reveal">
+        <span class="learning-icon">🗺️</span>
+        <p class="learning-text"><strong>Mapear o fluxo antes de escrever é inegociável.</strong> Só depois de entender os 13 passos como um todo é que consegui identificar quais momentos eram críticos e mereciam mais atenção de conteúdo.</p>
+      </div>
+      <div class="learning-item reveal">
+        <span class="learning-icon">🔇</span>
+        <p class="learning-text"><strong>O silêncio também é microcopy.</strong> A tela de confirmação do Inter não é ruim porque diz algo errado — é ruim porque não diz o suficiente. Às vezes, o problema não é o que está escrito, mas o que está faltando.</p>
+      </div>
+    </div>
+    <p class="disclaimer reveal">* Este é um exercício conceitual independente. Não tenho vínculo com o Banco Inter. Todas as análises e reescritas são de minha autoria, com base no fluxo público do aplicativo.</p>
+  </div>
+</section>
+
+<div class="case-nav">
+  <a href="portfolio-daniele.html" class="case-nav-link">
+    <p class="case-nav-meta">← Voltar</p>
+    <p class="case-nav-title">Todos os cases</p>
+  </a>
+  <a href="portfolio-daniele.html" class="back-btn">Ver todos os cases</a>
+  <a href="case-localizacao.html" class="case-nav-link" style="text-align:right;">
+    <p class="case-nav-meta">Próximo case →</p>
+    <p class="case-nav-title">Localização PT vs EN</p>
+  </a>
+</div>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) setTimeout(() => entry.target.classList.add('visible'), i * 60);
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

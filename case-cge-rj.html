@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case: CGE-RJ — Daniele Guimarães</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #ffffff; --bg-soft: #f7f7f7; --bg-dark: #111111;
+    --ink: #111111; --mid: #555555; --soft: #999999;
+    --border: #e5e5e5; --white: #ffffff;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--ink); font-family: 'Inter', sans-serif; font-weight: 400; overflow-x: hidden; line-height: 1.6; }
+
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 1rem 3rem; background: rgba(255,255,255,0.95); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); }
+  .nav-back { font-size: 0.8rem; font-weight: 500; color: var(--mid); text-decoration: none; transition: color 0.15s; }
+  .nav-back:hover { color: var(--ink); }
+  .nav-title { font-size: 0.8rem; color: var(--soft); }
+
+  /* HERO */
+  .hero { min-height: 70vh; padding-top: 64px; display: grid; grid-template-columns: 1fr 1fr; background: var(--bg-dark); }
+  .hero-left { padding: 6rem 4rem 6rem 3rem; display: flex; flex-direction: column; justify-content: center; border-right: 1px solid #222; }
+  .case-number { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #555; margin-bottom: 1.5rem; opacity: 0; animation: fadeUp 0.6s 0.1s forwards; }
+  .case-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.5rem; opacity: 0; animation: fadeUp 0.6s 0.2s forwards; }
+  .tag { font-size: 0.65rem; font-weight: 500; border: 1px solid #333; color: #888; padding: 0.3rem 0.75rem; border-radius: 4px; }
+  .hero-title { font-size: clamp(2.2rem, 5vw, 4rem); font-weight: 600; letter-spacing: -0.03em; line-height: 1.05; color: var(--white); margin-bottom: 1.5rem; opacity: 0; animation: fadeUp 0.7s 0.3s forwards; }
+  .hero-subtitle { font-size: 0.975rem; line-height: 1.8; color: #777; max-width: 44ch; opacity: 0; animation: fadeUp 0.7s 0.4s forwards; }
+  .hero-right { background: #161616; padding: 6rem 3rem; display: flex; flex-direction: column; justify-content: center; gap: 2rem; opacity: 0; animation: fadeIn 0.8s 0.5s forwards; }
+  .meta-label { font-size: 0.62rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #444; margin-bottom: 0.4rem; }
+  .meta-value { font-size: 0.9rem; color: #aaa; line-height: 1.5; }
+  .meta-divider { border: none; border-top: 1px solid #222; }
+
+  /* SECTIONS */
+  .section { padding: 5rem 3rem; }
+  .section-inner { max-width: 820px; margin: 0 auto; }
+  .section-label { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--soft); margin-bottom: 0.75rem; }
+  .section-title { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 600; letter-spacing: -0.02em; color: var(--ink); line-height: 1.15; margin-bottom: 1.5rem; }
+  .body-text { font-size: 0.975rem; line-height: 1.85; color: var(--mid); }
+  .body-text + .body-text { margin-top: 1em; }
+  .body-text strong { color: var(--ink); font-weight: 500; }
+
+  .highlight-box { background: var(--bg-soft); border: 1px solid var(--border); border-left: 3px solid var(--ink); padding: 1.5rem 2rem; margin: 2rem 0; border-radius: 0 6px 6px 0; }
+  .highlight-label { font-size: 0.62rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--soft); margin-bottom: 0.6rem; }
+  .highlight-text { font-size: 0.9rem; line-height: 1.8; color: var(--mid); }
+  .highlight-text strong { color: var(--ink); font-weight: 500; }
+
+  /* PROBLEM GRID */
+  .problem-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; margin-top: 2rem; background: var(--border); border: 1px solid var(--border); }
+  .problem-card { background: var(--bg); padding: 2rem; transition: background 0.15s; }
+  .problem-card:hover { background: var(--bg-soft); }
+  .problem-icon { font-size: 1.25rem; margin-bottom: 0.875rem; }
+  .problem-title { font-size: 0.9rem; font-weight: 600; color: var(--ink); margin-bottom: 0.5rem; letter-spacing: -0.01em; }
+  .problem-desc { font-size: 0.82rem; line-height: 1.7; color: var(--mid); }
+
+  /* BEFORE / AFTER */
+  .ba-section { background: var(--bg-dark); padding: 5rem 3rem; }
+  .ba-inner { max-width: 960px; margin: 0 auto; }
+  .ba-section .section-label { color: #555; }
+  .ba-section .section-title { color: var(--white); }
+  .ba-section .body-text { color: #666; }
+
+  .ba-example { margin-top: 3rem; }
+  .ba-example + .ba-example { margin-top: 3.5rem; padding-top: 3.5rem; border-top: 1px solid #1e1e1e; }
+  .ba-example-label { font-size: 0.62rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #444; margin-bottom: 1.25rem; }
+  .ba-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: #1e1e1e; border: 1px solid #1e1e1e; }
+  .ba-card { padding: 1.75rem 2rem; background: #161616; }
+  .ba-card-label { font-size: 0.62rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #444; margin-bottom: 0.875rem; }
+  .ba-text { font-size: 0.95rem; line-height: 1.75; }
+  .ba-before .ba-text { color: #444; font-style: italic; }
+  .ba-after  .ba-text { color: #ccc; }
+  .ba-annotation { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #1e1e1e; font-size: 0.8rem; line-height: 1.7; color: #555; }
+  .ba-annotation strong { color: #888; font-weight: 500; }
+
+  /* DATA */
+  .data-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; margin-top: 2rem; background: var(--border); border: 1px solid var(--border); }
+  .data-card { background: var(--bg-soft); padding: 2rem; text-align: center; }
+  .data-number { font-size: 2.5rem; font-weight: 600; letter-spacing: -0.03em; color: var(--ink); line-height: 1; }
+  .data-label { font-size: 0.72rem; color: var(--soft); margin-top: 0.4rem; line-height: 1.5; }
+  .data-note { font-size: 0.7rem; color: #bbb; margin-top: 0.3rem; font-style: italic; }
+
+  /* PROCESS */
+  .process-list { margin-top: 2rem; display: flex; flex-direction: column; }
+  .process-item { display: grid; grid-template-columns: 48px 1fr; gap: 1.5rem; padding: 1.75rem 0; border-bottom: 1px solid var(--border); align-items: start; }
+  .process-item:last-child { border-bottom: none; }
+  .process-num { font-size: 0.72rem; font-weight: 600; color: var(--soft); padding-top: 0.15rem; }
+  .process-title { font-size: 0.9rem; font-weight: 600; color: var(--ink); margin-bottom: 0.4rem; }
+  .process-desc { font-size: 0.84rem; line-height: 1.7; color: var(--mid); }
+  .process-desc strong { color: var(--ink); font-weight: 500; }
+
+  /* LEARNINGS */
+  .learning-list { margin-top: 2rem; display: flex; flex-direction: column; gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  .learning-item { display: flex; gap: 1.25rem; padding: 1.5rem 2rem; background: var(--bg); align-items: flex-start; }
+  .learning-icon { font-size: 1rem; flex-shrink: 0; padding-top: 0.15rem; }
+  .learning-text { font-size: 0.875rem; line-height: 1.8; color: var(--mid); }
+  .learning-text strong { color: var(--ink); font-weight: 500; }
+
+  /* CASE NAV */
+  .case-nav { background: var(--bg-dark); padding: 3rem; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #222; }
+  .case-nav-link { text-decoration: none; }
+  .case-nav-meta { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #555; margin-bottom: 0.4rem; }
+  .case-nav-title { font-size: 1rem; font-weight: 500; color: #aaa; transition: color 0.15s; }
+  .case-nav-link:hover .case-nav-title { color: var(--white); }
+  .back-btn { background: rgba(255,255,255,0.06); border: 1px solid #333; color: #aaa; text-decoration: none; font-size: 0.75rem; font-weight: 500; padding: 0.75rem 1.5rem; border-radius: 6px; transition: all 0.15s; }
+  .back-btn:hover { background: var(--white); color: var(--ink); }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  .reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="portfolio-daniele.html" class="nav-back">← Portfólio</a>
+  <span class="nav-title">Case 03 — CGE-RJ</span>
+</nav>
+
+<section class="hero">
+  <div class="hero-left">
+    <p class="case-number">Case 03 / 04</p>
+    <div class="case-tags">
+      <span class="tag">Plain Language</span>
+      <span class="tag">Arquitetura de Informação</span>
+      <span class="tag">Pesquisa de Conteúdo</span>
+      <span class="tag">Setor Público</span>
+    </div>
+    <h1 class="hero-title">Quando o texto do governo precisa falar com pessoas.</h1>
+    <p class="hero-subtitle">Como apliquei princípios de plain language e arquitetura de informação para tornar documentos institucionais da CGE-RJ mais claros, coesos e acessíveis.</p>
+  </div>
+  <div class="hero-right">
+    <div>
+      <p class="meta-label">Organização</p>
+      <p class="meta-value">Controladoria-Geral do Estado do Rio de Janeiro — Escola Superior de Controle Interno (ESCI)</p>
+    </div>
+    <hr class="meta-divider">
+    <div>
+      <p class="meta-label">Período</p>
+      <p class="meta-value">Junho – Outubro de 2023</p>
+    </div>
+    <hr class="meta-divider">
+    <div>
+      <p class="meta-label">Tipo de trabalho</p>
+      <p class="meta-value">Revisão editorial, reescrita em plain language, pesquisa e benchmarking de conteúdo</p>
+    </div>
+    <hr class="meta-divider">
+    <div>
+      <p class="meta-label">Materiais</p>
+      <p class="meta-value">Planos de capacitação, relatórios institucionais, postagens de agenda de eventos</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTEXTO -->
+<section class="section" style="border-bottom: 1px solid var(--border);">
+  <div class="section-inner">
+    <p class="section-label reveal">Contexto</p>
+    <h2 class="section-title reveal">O desafio de comunicar<br>no setor público</h2>
+    <p class="body-text reveal">A <strong>ESCI (Escola Superior de Controle Interno)</strong> é o braço educacional da CGE-RJ — responsável por capacitar servidores públicos do Estado do Rio de Janeiro em temas como auditoria, controle interno, transparência e gestão pública.</p>
+    <p class="body-text reveal">Para cumprir sua missão, a ESCI precisa comunicar com clareza: seus planos de capacitação precisam ser compreendidos por servidores de diferentes áreas e níveis. Seus relatórios precisam mostrar resultados de forma objetiva. Seus eventos precisam ser comunicados de forma que as pessoas realmente queiram participar.</p>
+    <p class="body-text reveal">O problema? Os textos não faziam isso.</p>
+    <div class="highlight-box reveal">
+      <p class="highlight-label">O problema central</p>
+      <p class="highlight-text">Os documentos da ESCI sofriam de um mal comum no setor público: <strong>linguagem pensada para quem escreve, não para quem lê.</strong> Frases longas demais, ideias sem conexão lógica, jargão técnico sem explicação — barreiras entre a instituição e os servidores que dependiam dessas informações.</p>
+    </div>
+  </div>
+</section>
+
+<!-- DIAGNÓSTICO -->
+<section class="section" style="background: var(--bg-soft); border-bottom: 1px solid var(--border);">
+  <div class="section-inner">
+    <p class="section-label reveal">Diagnóstico</p>
+    <h2 class="section-title reveal">Três problemas recorrentes</h2>
+  </div>
+  <div style="max-width: 960px; margin: 2rem auto 0; padding: 0 3rem;">
+    <div class="problem-grid reveal">
+      <div class="problem-card">
+        <div class="problem-icon">🧵</div>
+        <h3 class="problem-title">Frases longas demais</h3>
+        <p class="problem-desc">Uma única frase tentava dizer três coisas ao mesmo tempo — vírgulas empilhadas, gerúndios encadeados, subordinadas dentro de subordinadas — sem ponto final à vista.</p>
+      </div>
+      <div class="problem-card">
+        <div class="problem-icon">🔗</div>
+        <h3 class="problem-title">Ideias sem conexão</h3>
+        <p class="problem-desc">Parágrafos que mudavam de assunto abruptamente, sem transição lógica. O leitor terminava um bloco sem entender como ele se relacionava com o próximo.</p>
+      </div>
+      <div class="problem-card">
+        <div class="problem-icon">🏛️</div>
+        <h3 class="problem-title">Jargão sem tradução</h3>
+        <p class="problem-desc">Termos técnicos do universo jurídico e administrativo usados sem explicação — assumindo que todos os leitores tinham o mesmo nível de especialização.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ANTES / DEPOIS -->
+<section class="ba-section">
+  <div class="ba-inner">
+    <p class="section-label reveal">Na prática</p>
+    <h2 class="section-title reveal">Antes & depois</h2>
+    <p class="body-text reveal">Os exemplos abaixo são representativos do tipo de intervenção que eu fazia — recriados para preservar a confidencialidade dos documentos originais.</p>
+
+    <div class="ba-example reveal">
+      <p class="ba-example-label">Exemplo 01 — Trecho de plano de capacitação</p>
+      <div class="ba-cols">
+        <div class="ba-card ba-before">
+          <p class="ba-card-label">❌ Antes</p>
+          <p class="ba-text">"A presente ação de capacitação tem por escopo o desenvolvimento das competências técnicas e comportamentais dos servidores lotados nas unidades de controle interno, visando à consecução dos objetivos estratégicos da Controladoria, nos termos do disposto no plano vigente."</p>
+        </div>
+        <div class="ba-card ba-after">
+          <p class="ba-card-label">✅ Depois</p>
+          <p class="ba-text">"Esta capacitação foi criada para desenvolver as habilidades técnicas e comportamentais dos servidores de controle interno — ajudando a ESCI a alcançar seus objetivos estratégicos."</p>
+          <p class="ba-annotation"><strong>O que mudou:</strong> Eliminei o jargão jurídico ("escopo", "consecução", "nos termos do disposto"), usei voz ativa e reduzi o texto em 60% sem perder nenhuma informação relevante.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="ba-example reveal">
+      <p class="ba-example-label">Exemplo 02 — Postagem de evento na agenda do site</p>
+      <div class="ba-cols">
+        <div class="ba-card ba-before">
+          <p class="ba-card-label">❌ Antes</p>
+          <p class="ba-text">"Evento de capacitação referente ao módulo III do programa de formação continuada destinado aos servidores das unidades setoriais. Data: 14/08. Local: sede. Carga horária: 4h."</p>
+        </div>
+        <div class="ba-card ba-after">
+          <p class="ba-card-label">✅ Depois</p>
+          <p class="ba-text">"📅 Capacitação — Módulo III: Controle Interno na Prática<br><br>Para servidores das unidades setoriais.<br>14 de agosto · 4 horas · Sede da CGE-RJ<br><br>Inscrições abertas."</p>
+          <p class="ba-annotation"><strong>O que mudou:</strong> Reorganizei a hierarquia da informação — o que o evento é vem antes de quando e onde. Formatação facilita a leitura rápida. CTA "Inscrições abertas" foi adicionado — antes simplesmente não existia.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="ba-example reveal">
+      <p class="ba-example-label">Exemplo 03 — Conexão entre parágrafos de relatório</p>
+      <div class="ba-cols">
+        <div class="ba-card ba-before">
+          <p class="ba-card-label">❌ Antes</p>
+          <p class="ba-text">"Em 2022, foram realizadas 48 turmas. A ESCI conta com um corpo docente especializado. O programa de capacitação abrange servidores de todo o estado."</p>
+        </div>
+        <div class="ba-card ba-after">
+          <p class="ba-card-label">✅ Depois</p>
+          <p class="ba-text">"Em 2022, a ESCI realizou 48 turmas — atendendo servidores de todo o estado do Rio de Janeiro. Esse resultado foi possível graças a um corpo docente especializado, que garante a qualidade do programa."</p>
+          <p class="ba-annotation"><strong>O que mudou:</strong> Conectei as três ideias com relações causais explícitas. O leitor entende não só o que aconteceu, mas por quê é relevante.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PESQUISA -->
+<section class="section" style="border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+  <div class="section-inner">
+    <p class="section-label reveal">Pesquisa de conteúdo</p>
+    <h2 class="section-title reveal">Dados que contam<br>a história do crescimento</h2>
+    <p class="body-text reveal">Além da revisão textual, fiz pesquisa para embasar os relatórios da ESCI — levantando dados sobre o crescimento dos cursos ao longo dos anos e comparando a atuação da escola com Controladorias de outros estados brasileiros.</p>
+    <p class="body-text reveal">O objetivo era transformar números soltos em narrativa: mostrar, com evidências, que a ESCI estava crescendo e se consolidando como referência em formação de controle interno.</p>
+  </div>
+  <div style="max-width: 960px; margin: 2.5rem auto 0; padding: 0 3rem;">
+    <div class="data-grid reveal">
+      <div class="data-card">
+        <div class="data-number">48+</div>
+        <div class="data-label">turmas realizadas em 2022</div>
+        <div class="data-note">levantado via pesquisa interna</div>
+      </div>
+      <div class="data-card">
+        <div class="data-number">5+</div>
+        <div class="data-label">Controladorias de outros estados analisadas</div>
+        <div class="data-note">para benchmarking de programas</div>
+      </div>
+      <div class="data-card">
+        <div class="data-number">∞</div>
+        <div class="data-label">crescimento contínuo documentado</div>
+        <div class="data-note">narrativa construída com dados reais</div>
+      </div>
+    </div>
+    <div class="highlight-box reveal" style="margin-top: 2rem;">
+      <p class="highlight-label">Por que isso importa como habilidade de UX Content</p>
+      <p class="highlight-text">Pesquisa de conteúdo é uma competência central no UX Writing. Antes de escrever qualquer texto, um bom content designer precisa entender o contexto e os dados. Na ESCI, aprendi a <strong>encontrar informação, entender o que ela significa e transformá-la em narrativa clara</strong>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESSO -->
+<section class="section" style="background: var(--bg-soft); border-bottom: 1px solid var(--border);">
+  <div class="section-inner">
+    <p class="section-label reveal">Processo</p>
+    <h2 class="section-title reveal">Como eu trabalhava</h2>
+    <div class="process-list">
+      <div class="process-item reveal">
+        <p class="process-num">01</p>
+        <div>
+          <p class="process-title">Leitura crítica do material original</p>
+          <p class="process-desc">Antes de qualquer intervenção, eu lia o documento inteiro com olhar de <strong>leitora comum</strong>, não de especialista. Marcava os pontos onde travava, onde perdia o fio, onde precisava reler para entender.</p>
+        </div>
+      </div>
+      <div class="process-item reveal">
+        <p class="process-num">02</p>
+        <div>
+          <p class="process-title">Mapeamento dos problemas</p>
+          <p class="process-desc">Identificava os padrões recorrentes: frases longas, falta de conectivos, jargão. Esse diagnóstico guiava toda a revisão — em vez de corrigir aleatoriamente, eu <strong>trabalhava de forma sistemática</strong>.</p>
+        </div>
+      </div>
+      <div class="process-item reveal">
+        <p class="process-num">03</p>
+        <div>
+          <p class="process-title">Reescrita com intenção</p>
+          <p class="process-desc">Cada intervenção tinha uma razão. Eu não simplificava por simplificar — <strong>preservava o significado técnico</strong> enquanto tornava a forma mais acessível. Quando um termo era necessário, eu o mantinha e garantia que o contexto o explicasse.</p>
+        </div>
+      </div>
+      <div class="process-item reveal">
+        <p class="process-num">04</p>
+        <div>
+          <p class="process-title">Alinhamento com a equipe</p>
+          <p class="process-desc">As revisões passavam pela aprovação da equipe. Aprendi a <strong>explicar minhas escolhas editoriais</strong> de forma que fizesse sentido para pessoas que não pensavam em linguagem o tempo todo — uma habilidade essencial em content design.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- APRENDIZADOS -->
+<section class="section">
+  <div class="section-inner">
+    <p class="section-label reveal">Aprendizados</p>
+    <h2 class="section-title reveal">O que essa experiência<br>me ensinou</h2>
+    <div class="learning-list">
+      <div class="learning-item reveal">
+        <span class="learning-icon">💡</span>
+        <p class="learning-text"><strong>Plain language não é simplificação — é respeito.</strong> Escrever de forma clara não significa tratar o leitor como ignorante. Significa reconhecer que o tempo e a atenção das pessoas são limitados, e que o texto deve trabalhar por elas, não contra elas.</p>
+      </div>
+      <div class="learning-item reveal">
+        <span class="learning-icon">🗂️</span>
+        <p class="learning-text"><strong>A ordem das ideias é tão importante quanto as palavras.</strong> Muitas vezes o vocabulário estava correto, mas a sequência lógica estava quebrada. Reorganizar a estrutura do parágrafo — sem mudar uma única palavra — já tornava o texto muito mais compreensível.</p>
+      </div>
+      <div class="learning-item reveal">
+        <span class="learning-icon">📊</span>
+        <p class="learning-text"><strong>Dados sem narrativa são só números.</strong> A pesquisa de benchmarking me mostrou que informação bruta não comunica nada por si só. A habilidade está em <strong>escolher quais dados contar e como conectá-los</strong> para que façam sentido para quem lê.</p>
+      </div>
+      <div class="learning-item reveal">
+        <span class="learning-icon">🤝</span>
+        <p class="learning-text"><strong>Content design é colaborativo.</strong> Nenhuma revisão é definitiva sem o aval de quem conhece o conteúdo de perto. Aprendi a defender minhas escolhas editoriais sem impô-las — escutando o contexto e encontrando soluções que funcionassem para todos.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="case-nav">
+  <a href="case-localizacao.html" class="case-nav-link">
+    <p class="case-nav-meta">← Case anterior</p>
+    <p class="case-nav-title">Localização PT vs EN</p>
+  </a>
+  <a href="portfolio-daniele.html" class="back-btn">Ver todos os cases</a>
+  <a href="case-maple-bear.html" class="case-nav-link" style="text-align:right;">
+    <p class="case-nav-meta">Próximo case →</p>
+    <p class="case-nav-title">Maple Bear: Voice & Tone</p>
+  </a>
+</div>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) setTimeout(() => entry.target.classList.add('visible'), i * 60);
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
